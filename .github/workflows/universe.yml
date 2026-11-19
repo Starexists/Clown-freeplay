@@ -16,7 +16,7 @@ jobs:
       - name: Unpack universe.zip
         run: |
           mkdir proj
-          unzip -q universe.zip -d proj
+          unzip -q "universe (1).zip" -d proj
       - name: Build
         working-directory: proj
         run: gradle build --no-daemon --stacktrace
