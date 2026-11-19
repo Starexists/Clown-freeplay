@@ -6,6 +6,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-java@v4
         with:
           distribution: temurin
@@ -13,10 +15,12 @@ jobs:
       - uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: 9.2.1
-      - name: Unpack universe.zip
+      - name: Unpack newest universe zip
         run: |
+          Z="$(git -c core.quotepath=off log -1 --diff-filter=AM --name-only --format= -- 'universe*.zip' | grep -m1 .)"
+          echo "Using: $Z"
           mkdir proj
-          unzip -q "universe (1).zip" -d proj
+          unzip -q "$Z" -d proj
       - name: Build
         working-directory: proj
         run: gradle build --no-daemon --stacktrace
